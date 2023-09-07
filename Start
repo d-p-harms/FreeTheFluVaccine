@@ -1,0 +1,44 @@
+def get_user_input(prompt):
+    return float(input(prompt))
+
+def calculate_benefits():
+    # Gather user input
+    population = get_user_input("Enter city's population: ")
+    not_vaccinated_percentage = get_user_input("Enter percentage of the population not yet vaccinated (as a decimal): ")
+    expected_uptake = get_user_input("Enter expected uptake of free vaccines (as a decimal): ")
+
+    avg_treatment_cost = get_user_input("Enter average cost of treating illnesses the vaccine would prevent: ")
+    avg_daily_wage = get_user_input("Enter the average daily wage: ")
+
+    vaccine_cost = get_user_input("Enter cost per vaccine: ")
+    operational_costs_per_person = get_user_input("Enter operational cost per vaccinated person: ")
+
+    # Calculate total number of people expected to take the vaccine
+    potential_vaccinees = population * not_vaccinated_percentage * expected_uptake
+
+    # Calculate costs
+    total_vaccine_cost = vaccine_cost * potential_vaccinees
+    total_operational_cost = operational_costs_per_person * potential_vaccinees
+
+    # Calculate direct financial benefits
+    health_savings = potential_vaccinees * avg_treatment_cost
+    productivity_gains = potential_vaccinees * avg_daily_wage  # This is a simple estimate. A more detailed model could account for varied durations of illness.
+
+    # Calculate net benefit
+    total_benefit = health_savings + productivity_gains
+    total_cost = total_vaccine_cost + total_operational_cost
+    net_benefit = total_benefit - total_cost
+
+    # Output the results
+    print(f"Total expected health savings: ${health_savings:,.2f}")
+    print(f"Total expected productivity gains: ${productivity_gains:,.2f}")
+    print(f"Total cost of free vaccines: ${total_cost:,.2f}")
+    print(f"Net financial benefit: ${net_benefit:,.2f}")
+
+    if net_benefit > 0:
+        print("Offering free vaccines is financially beneficial!")
+    else:
+        print("Offering free vaccines might not be financially beneficial, but consider the broader societal benefits.")
+
+if __name__ == "__main__":
+    calculate_benefits()
