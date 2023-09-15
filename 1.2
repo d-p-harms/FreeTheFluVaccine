@@ -1,0 +1,76 @@
+class VaccineEconomics:
+    def __init__(self):
+        self.data = {}
+        self.results = {}
+
+    def get_input(self, prompt):
+        self.data[prompt] = float(input(prompt + ": "))
+
+    def collect_data(self):
+        # Data collection
+        prompts = [
+            "Enter city's population",
+            "Enter percentage of the population not yet vaccinated (as a decimal)",
+            "Enter expected uptake of free vaccines (as a decimal)",
+            "Enter average cost of treating illnesses the vaccine would prevent",
+            "Enter the average daily wage",
+            "Enter average number of workdays missed due to sickness",
+            "Enter cost per vaccine",
+            "Enter operational cost per vaccinated person",
+            "Enter city's average tax rate (as a decimal)"
+        ]
+
+        for prompt in prompts:
+            self.get_input(prompt)
+
+    def calculate_costs(self):
+        potential_vaccinees = self.data["Enter city's population"] * self.data["Enter percentage of the population not yet vaccinated (as a decimal)"] * self.data["Enter expected uptake of free vaccines (as a decimal)"]
+
+        vaccine_cost = self.data["Enter cost per vaccine"] * potential_vaccinees
+        operational_cost = self.data["Enter operational cost per vaccinated person"] * potential_vaccinees
+
+        self.results["Total Vaccine Cost"] = vaccine_cost
+        self.results["Total Operational Cost"] = operational_cost
+
+    def calculate_benefits(self):
+        potential_vaccinees = self.data["Enter city's population"] * self.data["Enter percentage of the population not yet vaccinated (as a decimal)"] * self.data["Enter expected uptake of free vaccines (as a decimal)"]
+
+        health_savings = potential_vaccinees * self.data["Enter average cost of treating illnesses the vaccine would prevent"]
+        productivity_gains = potential_vaccinees * self.data["Enter average number of workdays missed due to sickness"] * self.data["Enter the average daily wage"]
+
+        self.results["Health Savings"] = health_savings
+        self.results["Productivity Gains"] = productivity_gains
+
+    def compute_city_benefit(self):
+        city_benefit = self.data["Enter city's average tax rate (as a decimal)"] * self.results["Net Benefit"]
+        self.results["City's Financial Gain"] = city_benefit
+
+    def evaluate_viability(self):
+        total_cost = self.results["Total Vaccine Cost"] + self.results["Total Operational Cost"]
+        if self.results["City's Financial Gain"] > total_cost:
+            self.results["Viability"] = "The plan is economically viable for the city."
+        else:
+            self.results["Viability"] = "The plan might not be economically viable for the city, but consider the broader societal benefits."
+
+    def compute_net_benefit(self):
+        self.results["Net Benefit"] = self.results["Health Savings"] + self.results["Productivity Gains"]
+
+    def display_results(self):
+        for key, value in self.results.items():
+            if key != "Viability":
+                print(f"{key}: ${value:,.2f}")
+            else:
+                print(value)
+
+    def run(self):
+        self.collect_data()
+        self.calculate_costs()
+        self.calculate_benefits()
+        self.compute_net_benefit()
+        self.compute_city_benefit()
+        self.evaluate_viability()
+        self.display_results()
+
+if __name__ == "__main__":
+    program = VaccineEconomics()
+    program.run()
